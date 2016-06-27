@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FE5A1D"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.example.samharris.spiderapp2.MainActivity">
+
+
+    <ImageView
+        android:adjustViewBounds="true"
+        android:layout_marginTop="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/musicPic"
+        android:maxHeight="300dp"
+        android:nestedScrollingEnabled="false"
+        android:maxWidth="300dp"
+        android:minHeight="300dp"
+        android:minWidth="300dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <Spinner
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:gravity="center"
+        android:textAlignment="center" />
+
+    <ImageButton
+
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btPlay"
+        android:layout_below="@+id/musicPic"
+        android:layout_centerHorizontal="true"
+        android:src="@android:drawable/ic_media_play"
+        android:background="@android:drawable/ic_media_play" />
+
+    <ImageButton
+
+        android:layout_marginRight="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btNext"
+        android:background="@android:drawable/ic_media_next"
+        android:layout_alignTop="@+id/btPlay"
+        android:layout_toEndOf="@+id/btStop" />
+
+    <ImageButton
+        android:layout_marginRight="35dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btStop"
+        android:src="#ed1010"
+        android:background="@android:drawable/picture_frame"
+        android:layout_alignBottom="@+id/btNext"
+        android:layout_alignStart="@+id/musicPic" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=":-)"
+        android:id="@+id/tvTimer"
+        android:textIsSelectable="false"
+        android:textSize="17sp"
+        android:layout_marginEnd="32dp"
+        android:layout_alignTop="@+id/btStop"
+        android:layout_alignEnd="@+id/musicPic" />
+
+</RelativeLayout>
