@@ -12,69 +12,89 @@
 
 
     <ImageView
-        android:adjustViewBounds="true"
-        android:layout_marginTop="25dp"
+        android:id="@+id/musicPic"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/musicPic"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="25dp"
+        android:adjustViewBounds="true"
         android:maxHeight="300dp"
-        android:nestedScrollingEnabled="false"
         android:maxWidth="300dp"
         android:minHeight="300dp"
-        android:minWidth="300dp"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:minWidth="300dp" />
 
     <Spinner
-        android:layout_marginTop="20dp"
+        android:id="@+id/spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/spinner"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
+        android:layout_above="@+id/musicPic"
+        android:layout_marginBottom="25dp"
+        android:layout_toEndOf="@+id/btNext"
         android:gravity="center"
         android:textAlignment="center" />
 
     <ImageButton
 
-        android:layout_marginTop="30dp"
+        android:id="@+id/btPlay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btPlay"
         android:layout_below="@+id/musicPic"
         android:layout_centerHorizontal="true"
-        android:src="@android:drawable/ic_media_play"
-        android:background="@android:drawable/ic_media_play" />
+        android:layout_marginTop="30dp"
+        android:background="@android:drawable/ic_media_play"
+        android:src="@android:drawable/ic_media_play" />
 
     <ImageButton
 
-        android:layout_marginRight="0dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/btNext"
-        android:background="@android:drawable/ic_media_next"
-        android:layout_alignTop="@+id/btPlay"
-        android:layout_toEndOf="@+id/btStop" />
-
-    <ImageButton
-        android:layout_marginRight="35dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/btPlay"
+        android:layout_toEndOf="@+id/btStop"
+        android:background="@android:drawable/ic_media_next" />
+
+    <ImageButton
         android:id="@+id/btStop"
-        android:src="#ed1010"
-        android:background="@android:drawable/picture_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/btNext"
-        android:layout_alignStart="@+id/musicPic" />
+        android:layout_alignStart="@+id/musicPic"
+        android:layout_marginEnd="35dp"
+        android:background="@android:drawable/picture_frame"
+        android:src="#ed1010" />
 
     <TextView
+        android:id="@+id/tvTimer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=":-)"
-        android:id="@+id/tvTimer"
-        android:textIsSelectable="false"
-        android:textSize="17sp"
+        android:layout_alignEnd="@+id/musicPic"
+        android:layout_alignTop="@+id/btPlay"
         android:layout_marginEnd="32dp"
-        android:layout_alignTop="@+id/btStop"
-        android:layout_alignEnd="@+id/musicPic" />
+        android:text=":-)"
+        android:textIsSelectable="false"
+        android:textSize="17sp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/musicPic"
+        android:layout_alignTop="@+id/spinner"
+        android:text="Choose"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#220101"
+        android:textSize="20dp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/textView"
+        android:layout_below="@+id/textView"
+        android:text="Music"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:textColor="#220101"
+        android:textSize="20dp" />
 
 </RelativeLayout>

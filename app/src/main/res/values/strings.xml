@@ -1,11 +1,12 @@
 <resources>
     <string name="app_name">SpiderApp2</string>
-    <string-array name="songs">
+    <string-array name="songsArray">
 
         <item>Smooth Criminal</item>
         <item>Under Pressure</item>
         <item>Mr.Roboto</item>
         <item>Bohemian Rhapsody</item>
+        <item> </item>
 
     </string-array>
 </resources>

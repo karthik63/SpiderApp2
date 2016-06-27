@@ -1,11 +1,10 @@
 package com.example.samharris.spiderapp2;
 
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,11 +26,8 @@ public class MainActivity extends AppCompatActivity {
     Spinner songs;
     TextView tvCountdown;
     ArrayAdapter<CharSequence> songList;
-
-    private int currentState = 0;
-    private int countDown = 3;
     boolean ifCDrunning;
-
+    private int currentState = 0;
     Handler hPictureUpdate = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -54,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-
+    private int countDown = 3;
     Handler hCountUpdate = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -74,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                if(ifCDrunning==true)
+                if (ifCDrunning)
                 {
                     synchronized (this) {
                         try {
@@ -91,8 +87,8 @@ public class MainActivity extends AppCompatActivity {
                 switch(currentState)
                 {
                     case 0:
-                    mPlayer = MediaPlayer.create(MainActivity.this, R.raw.smooth_criminal);
-                    mPlayer.start();
+                        mPlayer = MediaPlayer.create(MainActivity.this, R.raw.smooth_criminal);
+                        mPlayer.start();
                         break;
 
                     case 1:
@@ -123,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                if(ifCDrunning==true)
+                if (ifCDrunning)
                 {
                     synchronized (this) {
                         try {
@@ -135,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
                 }
 
-               hPictureUpdate.sendEmptyMessage(0);
+                hPictureUpdate.sendEmptyMessage(0);
             }
         };
 
@@ -153,23 +149,24 @@ public class MainActivity extends AppCompatActivity {
                 countDown=3;
                 hCountUpdate.sendEmptyMessage(0);
 
-             for(int i=3;i>=0;i--) {
+                for (int i = 3; i >= 0; i--) {
 
-                 hCountUpdate.sendEmptyMessage(0);
+                    hCountUpdate.sendEmptyMessage(0);
 
-                 synchronized (this) {
-                     try {
-                         wait(1000);
-                     } catch (InterruptedException e) {
-                         e.printStackTrace();
-                     }
-                 }
+                    synchronized (this) {
+                        try {
+                            wait(1000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-                 countDown--;
+                    countDown--;
 
-                 hCountUpdate.sendEmptyMessage(0);
+                    hCountUpdate.sendEmptyMessage(0);
 
-             }  }
+                }
+            }
         };
 
         cdTimerThread=new Thread(rRunCDTimer);
@@ -178,17 +175,17 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    private void changeSlide(){
-//        runCDTimer();
-//
-//        ifCDrunning=true;
-//
-//        updatePicture();
-//
-//        playMusic();
-//
-//        ifCDrunning=false;
-//    }
+    private void changeSlide() {
+
+        runCDTimer();
+
+        ifCDrunning = true;
+
+        updatePicture();
+
+        playMusic();
+
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -200,41 +197,56 @@ public class MainActivity extends AppCompatActivity {
         musicPic.setImageResource(R.drawable.smooth_criminal);
         mPlayer = MediaPlayer.create(MainActivity.this, R.raw.smooth_criminal);
         songs = (Spinner) findViewById(R.id.spinner);
-        songList = ArrayAdapter.createFromResource(this,R.array.songs,android.R.layout.simple_spinner_item);
+        songList = ArrayAdapter.createFromResource(this, R.array.songsArray, android.R.layout.simple_spinner_item);
         songList.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         songs.setAdapter(songList);
+        songs.setSelection(4);
         btNext = (ImageButton)findViewById(R.id.btNext);
         btPlay = (ImageButton)findViewById(R.id.btPlay);
+        btStop = (ImageButton) findViewById(R.id.btStop);
 
-//        songs.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//
-//                String selection = songs.getSelectedItem().toString();
-//
-//                switch (selection)
-//                {
-//                    case "Smooth Criminal":
-//                        currentState=0;
-//
-//                    case "Under Pressure":
-//                        currentState=1;
-//
-//                    case "Mr.Roboto":
-//                        currentState=2;
-//
-//                    case "Bohemian Rhapsody":
-//                        currentState=3;
-//                }
-//
-//                changeSlide();
-//
-//            }
-//        });
+        songs.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            public void onItemSelected(AdapterView<?> parent, View view,
+                                       int pos, long id) {
+
+                int selection = songs.getSelectedItemPosition();
+
+                switch (selection) {
+                    case 0:
+                        currentState = 0;
+                        break;
+
+                    case 1:
+                        currentState = 1;
+                        break;
+
+                    case 2:
+                        currentState = 2;
+                        break;
+
+                    case 3:
+                        currentState = 3;
+                }
+
+                if (songs.getSelectedItemPosition() != 4)
+                    changeSlide();
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //do Nothing
+            }
+
+
+        });
 
         btPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                ifCDrunning = false;
                 playMusic();
             }
         });
@@ -244,9 +256,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 currentState= (currentState+1)%4;
 
-//                changeSlide();
+                changeSlide();
 
-                songs.setSelection(currentState);
+                songs.setSelection(4);
+
             }
         });
 
