@@ -39,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
                 tvCountdown.setText("Loading... " + String.valueOf(countDown));
         }
     };
+    private boolean isRunningImg;
+    private boolean isRunningCD;
+    private boolean isRunningMusic;
     private int currentStateImg = 0;
     Handler hPictureUpdate = new Handler(){
         @Override
@@ -67,12 +70,12 @@ public class MainActivity extends AppCompatActivity {
 
     private void playMusic()
     {
+        if (mPlayer.isPlaying())
+            mPlayer.stop();
+
         Runnable play = new Runnable() {
             @Override
             public void run() {
-
-                if(mPlayer.isPlaying())
-                    mPlayer.stop();
 
                 switch (currentStateMusic)
                 {
@@ -109,6 +112,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
+                isRunningImg = true;
+
                 while (currentStateImg < 3) {
                     synchronized (this) {
                         try {
@@ -122,6 +127,8 @@ public class MainActivity extends AppCompatActivity {
 
                     hPictureUpdate.sendEmptyMessage(0);
                 }
+
+                isRunningImg = false;
             }
         };
 
@@ -135,6 +142,8 @@ public class MainActivity extends AppCompatActivity {
         Runnable rRunCDTimer = new Runnable() {
             @Override
             public void run() {
+
+                isRunningCD = true;
 
                 while (cd < 3) {
 
@@ -162,6 +171,8 @@ public class MainActivity extends AppCompatActivity {
 
                     cd++;
                 }
+
+                isRunningCD = false;
             }
         };
 
@@ -173,14 +184,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void startSlideshow() {
 
-
+        if (!isRunningCD && !isRunningImg) {
         currentStateImg = 0;
+
         cd = 0;
         hPictureUpdate.sendEmptyMessage(0);
 
         runCDTimer();
 
         updatePicture();
+
+        }
 
     }
 
