@@ -26,12 +26,24 @@ public class MainActivity extends AppCompatActivity {
     Spinner songs;
     TextView tvCountdown;
     ArrayAdapter<CharSequence> songList;
-    boolean ifCDrunning;
-    private int currentState = 0;
+    private int countDown = 3;
+    Handler hCountUpdate = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            tvCountdown = (TextView) findViewById(R.id.tvTimer);
+
+            if (countDown <= 0)
+                tvCountdown.setText("End");
+
+            else
+                tvCountdown.setText("Loading... " + String.valueOf(countDown));
+        }
+    };
+    private int currentStateImg = 0;
     Handler hPictureUpdate = new Handler(){
         @Override
         public void handleMessage(Message msg) {
-            switch(currentState)
+            switch (currentStateImg)
             {
                 case 0:
                     musicPic.setImageResource(R.drawable.smooth_criminal);
@@ -50,19 +62,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
-    private int countDown = 3;
-    Handler hCountUpdate = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            tvCountdown=(TextView)findViewById(R.id.tvTimer);
-
-            if(countDown<=0)
-                tvCountdown.setText(":-)");
-
-            else
-                tvCountdown.setText("Loading... "+String.valueOf(countDown));
-        }
-    };
+    private int currentStateMusic = 0;
+    private int cd = 0;
 
     private void playMusic()
     {
@@ -70,21 +71,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                if (ifCDrunning)
-                {
-                    synchronized (this) {
-                        try {
-                            wait(3000);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
                 if(mPlayer.isPlaying())
                     mPlayer.stop();
 
-                switch(currentState)
+                switch (currentStateMusic)
                 {
                     case 0:
                         mPlayer = MediaPlayer.create(MainActivity.this, R.raw.smooth_criminal);
@@ -119,8 +109,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
-                if (ifCDrunning)
-                {
+                while (currentStateImg < 3) {
                     synchronized (this) {
                         try {
                             wait(3000);
@@ -129,9 +118,10 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
 
-                }
+                    currentStateImg++;
 
-                hPictureUpdate.sendEmptyMessage(0);
+                    hPictureUpdate.sendEmptyMessage(0);
+                }
             }
         };
 
@@ -146,10 +136,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
 
+                while (cd < 3) {
+
                 countDown=3;
+
                 hCountUpdate.sendEmptyMessage(0);
 
-                for (int i = 3; i >= 0; i--) {
+                    for (int i = 3; i > 0; i--) {
 
                     hCountUpdate.sendEmptyMessage(0);
 
@@ -166,6 +159,9 @@ public class MainActivity extends AppCompatActivity {
                     hCountUpdate.sendEmptyMessage(0);
 
                 }
+
+                    cd++;
+                }
             }
         };
 
@@ -175,15 +171,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void changeSlide() {
+    private void startSlideshow() {
+
+
+        currentStateImg = 0;
+        cd = 0;
+        hPictureUpdate.sendEmptyMessage(0);
 
         runCDTimer();
 
-        ifCDrunning = true;
-
         updatePicture();
-
-        playMusic();
 
     }
 
@@ -214,23 +211,23 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (selection) {
                     case 0:
-                        currentState = 0;
+                        currentStateMusic = 0;
                         break;
 
                     case 1:
-                        currentState = 1;
+                        currentStateMusic = 1;
                         break;
 
                     case 2:
-                        currentState = 2;
+                        currentStateMusic = 2;
                         break;
 
                     case 3:
-                        currentState = 3;
+                        currentStateMusic = 3;
                 }
 
                 if (songs.getSelectedItemPosition() != 4)
-                    changeSlide();
+                    playMusic();
 
             }
 
@@ -246,7 +243,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                ifCDrunning = false;
                 playMusic();
             }
         });
@@ -254,13 +250,11 @@ public class MainActivity extends AppCompatActivity {
         btNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                currentState= (currentState+1)%4;
 
-                changeSlide();
-
-                songs.setSelection(4);
+                startSlideshow();
 
             }
+
         });
 
         btStop.setOnClickListener(new View.OnClickListener() {
